@@ -2,6 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+    <EditText
+        android:inputType="numberDecimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/billAmountEdit" />
+    <Button
+        android:text="CALCULATE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calculateBtn"
+        android:clickable="true" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="23.0dp"
+        android:id="@+id/linearLayout1"
+        android:layout_marginBottom="5.0dp">
+        <TextView
+            android:text="Tip"
+            android:layout_width="48.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/tipView" />
+        <TextView
+            android:text="0.0"
+            android:layout_width="48.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/tipValView" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="23.0dp"
+        android:id="@+id/linearLayout2"
+        android:layout_marginBottom="0.0dp">
+        <TextView
+            android:text="Total"
+            android:layout_width="48.0dp"
+            android:layout_height="24.0dp"
+            android:id="@+id/totalView" />
+        <TextView
+            android:text="0.0"
+            android:layout_width="48.0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/totalValView" />
+    </LinearLayout>
 </LinearLayout>
