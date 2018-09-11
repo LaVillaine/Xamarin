@@ -2,6 +2,7 @@
 using Android.Widget;
 using Android.OS;
 using System;
+using Android.Icu.Text;
 
 namespace TipCalculator
 {
@@ -34,7 +35,15 @@ namespace TipCalculator
         {
             if (billAmount.Text.Length > 0)
             {
-                double bill = double.Parse(billAmount.Text);
+                double bill = 0;
+                bool isValid = double.TryParse(billAmount.Text.ToString(), out bill);
+                //if (!isValid)
+                //    return;
+                //double bill = double.Parse(billAmount.Text);
+                NumberFormat nf = NumberFormat.GetCurrencyInstance(Android.Icu.Util.ULocale.Default);
+                var parsed = nf.Parse(billAmount.Text.ToString());
+                var myVal = parsed.DoubleValue();
+
                 if (bill > 0.0)
                 {
                     double tip = bill * 15 / 100;
