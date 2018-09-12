@@ -5,17 +5,26 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using System.Collections.Generic;
+using System;
 
 namespace Dining
 {
     public class RestaurantViewHolder : RecyclerView.ViewHolder
     {
-        public RestaurantViewHolder(View itemView)
+        public RestaurantViewHolder(View itemView, Action<int> clickListener)
             : base(itemView)
         {
             Image = itemView.FindViewById<ImageView>(Resource.Id.imageView);
             Rating = itemView.FindViewById<RatingBar>(Resource.Id.ratingBar);
             Name = itemView.FindViewById<TextView>(Resource.Id.nameTextView);
+
+            itemView.Click += (s, e) =>
+            {
+                int position = base.AdapterPosition;
+                if (position == RecyclerView.NoPosition)
+                    return;
+                clickListener(position);
+            };
         }
 
         public ImageView Image { get; private set; }
@@ -28,6 +37,7 @@ namespace Dining
     public class RestaurantAdapter : RecyclerView.Adapter
     {
         List<Restaurant> listOfRestaurants;
+        public event EventHandler<int> ItemClick;
 
         public RestaurantAdapter(List<Restaurant> data)
         {
@@ -43,7 +53,7 @@ namespace Dining
         {
             var inflater = LayoutInflater.From(parent.Context);
             var view = inflater.Inflate(Resource.Layout.Restaurant, parent, false);
-            return new RestaurantViewHolder(view);
+            return new RestaurantViewHolder(view, OnItemClick);
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -52,6 +62,12 @@ namespace Dining
             viewHolder.Image.SetImageDrawable(listOfRestaurants[position].Image);
             viewHolder.Rating.Rating = listOfRestaurants[position].Rating;
             viewHolder.Name.Text = listOfRestaurants[position].Name;
+        }
+
+        public void OnItemClick(int position)
+        {
+            if (ItemClick != null)
+                ItemClick(this, position);
         }
     }
 
@@ -72,10 +88,16 @@ namespace Dining
             var layoutMan = new GridLayoutManager(this, 2, GridLayoutManager.Vertical, false);
             listOfRestaurants = SampleData.GetRestaurants(this);
             restauAdapter = new RestaurantAdapter(listOfRestaurants);
+            restauAdapter.ItemClick += OnItemClick;
 
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             recyclerView.SetLayoutManager(layoutMan);
             recyclerView.SetAdapter(restauAdapter);
+        }
+
+        void OnItemClick(object sender, int position)
+        {
+            System.Diagnostics.Debug.WriteLine("Click: " + position);
         }
     }
 }
